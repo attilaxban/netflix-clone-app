@@ -98,7 +98,7 @@
             return res.status(404).json({ error: 'User not found' });
           }
           res.status(200).json({
-
+            _id : user._id,
             first_name: user.first_name,
             last_name: user.last_name,
             username: user.username,
@@ -112,18 +112,26 @@
     });
     
 
-app.patch("/api/v1/users/update-credentials/:id", verifyToken, async (req, res, next) => {
-    try {
-      const user = await userModel.findOneAndUpdate(
-        { _id: req.params.id },
-        { $set: { ...req.body } },
-        { new: true }
-      );
-      return res.json(user);
-    } catch (err) {
-      return next(err);
-    }
-  });
+    app.patch("/api/v1/users/update-credentials/:id", verifyToken, async (req, res, next) => {
+        try {
+          const updatedUser = { ...req.body };
+
+          if (updatedUser.password) {
+            updatedUser.password = await bcrypt.hash(updatedUser.password, 10);
+          }
+      
+          const user = await userModel.findOneAndUpdate(
+            { _id: req.params.id },
+            { $set: updatedUser },
+            { new: true }
+          );
+      
+          return res.json(user);
+        } catch (err) {
+          return next(err);
+        }
+      });
+      
 
 app.delete('/api/v1/users/:id', async (req,res,next) => {
     try {
