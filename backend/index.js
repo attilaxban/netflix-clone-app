@@ -73,6 +73,7 @@ app.get('/api/v1/users/:id', async (req,res,next) => {
     try {
         const user = await userModel.findById(id);
         if(user){
+            console.log(user)
             return res.json(user)
         }else{
            return res.status(404).json('User not found'); 
