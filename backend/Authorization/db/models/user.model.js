@@ -35,6 +35,11 @@ const userModel = new Schema({
     history: {
         type: Array,
         default: []
+    },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
     }
 })
 
