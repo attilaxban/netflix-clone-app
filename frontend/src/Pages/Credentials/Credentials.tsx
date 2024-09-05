@@ -1,11 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { IUser } from './ICredentials';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const Credentials: React.FC = () => {
     const [userData, setUserData] = useState<IUser | null>(null);
     const [error, setError] = useState<string>('');
+    const navigate = useNavigate()
+
+    const handleLogOut = async () => {
+
+        try {
+            const response = await fetch('/api/v1/users/logout',{
+                method: 'POST',
+                credentials: 'include'
+            })
+
+            if(response.ok){
+                navigate('/login');
+            }else{
+                return (console.log('Logout failed'))
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -23,7 +43,7 @@ const Credentials: React.FC = () => {
                     setError(data.error || 'Failed to fetch user data');
                 }
             } catch (err) {
-                setError('Something went wrong');
+                setError(`Something went wrong \n ${err}`);
             }
         };
 
@@ -31,7 +51,10 @@ const Credentials: React.FC = () => {
     }, []);
 
     if (error) {
-        return <p style={{ color: 'red' }}>{error}</p>;
+        return <div>
+            <p style={{ color: 'red' }}>{error}</p>
+            <button onClick={() => {navigate('/login')}}>Login</button>
+        </div>;
     }
 
     if (!userData) {
@@ -46,6 +69,8 @@ const Credentials: React.FC = () => {
             <p><strong>Username:</strong> {userData.username}</p>
             <p><strong>Email:</strong> {userData.email}</p>
             <p><strong>Promotion:</strong> {userData.promotion}</p>
+
+            <button onClick={() => handleLogOut()}>Logout</button>
         </div>
     );
 };

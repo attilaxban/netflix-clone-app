@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import './Login.css'
 
 
 const Login: React.FC = () => {
@@ -22,16 +23,19 @@ const Login: React.FC = () => {
             });
 
             if(response.ok){
-                console.log('success')
                 navigate('/credentials')
             }else{
                 const data = await response.json();
                 setError(data.error || 'Login failed');
             }
         } catch (err) {
+            setError("Something went wrong")
             console.error(err)
-            console.log("fail")
         }
+    }
+
+    if (error) {
+        return <p style={{ color: 'red' }}>{error}</p>;
     }
 
 

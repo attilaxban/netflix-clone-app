@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser';
 
 import { verifyToken } from './auth.js';
+import { getRandomNumber } from './randomNumber.js';
 
 const app = express();
 app.use(express.json())
@@ -152,21 +153,40 @@ try {
 
 
 
-app.get('/api/v1/users/:id', async (req,res) => {
-const id = req.params.id;
 
-try {
-  const user = await userModel.findById(id);
-  if(user){
-      console.log(user)
-      return res.json(user)
-  }else{
-  return res.status(404).json('User not found'); 
+
+
+/*---------------------------------*/
+
+
+
+app.get('/api/v1/movies/popular', verifyToken, async (req,res) => {
+
+  const pageNumber = getRandomNumber()
+
+  console.log(pageNumber)
+
+  try {
+    const response = await fetch(`https://api.themoviedb.org/3/movie/popular?language=en-US&page=${pageNumber}`,{
+      method: 'GET',
+      headers:{
+        Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
+        'Content-Type' : 'application/json'
+      }
+    })
+
+    if(response.ok){
+      const data = await response.json();
+      return res.send(data);
+    }else{
+      return res.status(response.status).send({ error: "Failed to fetch data" });
+    }
+  } catch (error) {
+    return res.status(500).json('Internal server error')
   }
-} catch (error) {
-res.status(500).json({ error: 'Internal server error' });
-}
+
 })
+
 
 app.listen(3000, () => {
 console.log('App is running on http://localhost:3000')
