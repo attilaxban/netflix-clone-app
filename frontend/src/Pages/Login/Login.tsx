@@ -40,9 +40,10 @@ const Login: React.FC = () => {
 
 
     return (
-        <div>
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
+        <div id="login-box">
+            
+            <form id="login-form" onSubmit={handleLogin}>
+            <label htmlFor="login">Login</label>
                 <div>
                     <label htmlFor="username">Username:</label>
                     <input

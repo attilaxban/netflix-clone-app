@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const Popular: React.FC = () => {
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [populars, setPopulars] = useState<any[]>([]);
 
     useEffect(() => {

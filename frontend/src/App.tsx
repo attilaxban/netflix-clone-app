@@ -4,6 +4,7 @@ import LoginPage from './Pages/Login/Login';
 import CredentialsPage from './Pages/Credentials/Credentials';
 import './App.css';
 import Popular from './Pages/Popular/Popular';
+import Registration from './Pages/Registration/Registration';
 
 const App: React.FC = () => {
     return (
@@ -14,6 +15,7 @@ const App: React.FC = () => {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/credentials" element={<CredentialsPage />} />
                     <Route path="/popular" element={<Popular />} />
+                    <Route path="/register" element={<Registration />} />
                 </Routes>
             </div>
         </Router>
