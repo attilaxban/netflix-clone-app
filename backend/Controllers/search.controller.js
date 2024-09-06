@@ -12,9 +12,9 @@ export async function searchPerson(req, res) {
             return res.status(404).send(null);
         }
 
-        await User.findByIdAndUpdate(req.user._id, {
+        await userModel.findByIdAndUpdate(req.user._id, {
             $push: {
-                searchHistory: {
+                history: {
                     id: response.results[0].id,
                     image: response.results[0].profile_path,
                     title: response.results[0].name,
@@ -42,9 +42,9 @@ export async function searchMovie(req, res) {
             return res.status(404).send(null);
         }
 
-        await userModel.findByIdAndUpdate(req.body._id, {
+        await userModel.findByIdAndUpdate(req.user._id, {
             $push: {
-                searchHistory: {
+                history: {
                     id: response.results[0].id,
                     image: response.results[0].poster_path,
                     title: response.results[0].title,
@@ -71,9 +71,9 @@ export async function searchTv(req, res) {
             return res.status(404).send(null);
         }
 
-        await User.findByIdAndUpdate(req.user._id, {
+        await userModel.findByIdAndUpdate(req.user._id, {
             $push: {
-                searchHistory: {
+                history: {
                     id: response.results[0].id,
                     image: response.results[0].poster_path,
                     title: response.results[0].name,
@@ -98,12 +98,12 @@ export async function getSearchHistory(req, res) {
 }
 
 export async function removeItemFromSearchHistory(req, res) {
-    let { id } = req.params;
+    let id = req.params.id
 
     id = parseInt(id);
 
     try {
-        await User.findByIdAndUpdate(req.user._id, {
+        await userModel.findByIdAndUpdate(req.user._id, {
             $pull: {
                 searchHistory: { id: id },
             },
