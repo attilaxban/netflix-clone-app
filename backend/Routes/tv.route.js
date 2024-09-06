@@ -1,6 +1,6 @@
 import express from "express";
 import { getSimilarTvs, getTrendingTv, getTvDetails, getTvsByCategory, getTvTrailers, } from '../Controllers/tv.controller.js';
-import { verifyToken } from "../config/auth.js";
+import { verifyToken } from "../config/tokenGenerator.js";
 
 const router = express.Router();
 
