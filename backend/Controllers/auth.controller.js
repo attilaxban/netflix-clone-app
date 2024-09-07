@@ -29,12 +29,9 @@ export async function registerUser(req, res) {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const newUser = await userModel.create({
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
       username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
-      promotion: req.body.promotion,
       role: req.body.role
     });
     if (newUser) {
@@ -87,12 +84,9 @@ export async function getUserCredentials(req, res) {
     }
     res.status(200).json({
       _id: user._id,
-      first_name: user.first_name,
-      last_name: user.last_name,
       username: user.username,
       password: user.password,
       email: user.email,
-      promotion: user.promotion
     });
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' });
@@ -106,11 +100,9 @@ export async function updateUserCredentials(req, res) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    user.first_name = req.body.first_name || user.first_name;
-    user.last_name = req.body.last_name || user.last_name;
-    user.password = req.body.password || user.password;
+    user.password = await bcrypt.hash((req.body.password || user.password), 10)
     user.email = req.body.email || user.email;
-    user.promotion = req.body.promotion || user.promotion;
+
 
     await user.save();
 
@@ -118,11 +110,9 @@ export async function updateUserCredentials(req, res) {
       message: 'User updated successfully',
       user: {
         _id: user._id,
-        first_name: user.first_name,
-        last_name: user.last_name,
         username: user.username,
         email: user.email,
-        promotion: user.promotion,
+        password: user.password,
       },
     });
   } catch (error) {
