@@ -1,0 +1,11 @@
+/* styles.css */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Webkit alapú böngészők (Chrome, Safari) */
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* Internet Explorer */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  

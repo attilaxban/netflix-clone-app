@@ -1,7 +1,43 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { IUser } from './IUser';
 
 export const Login = () => {
+  const [user, setUser] = useState<IUser | null>({
+    username: '',
+    password: ''
+  });
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [error,setError] = useState('')
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault()
+    try {
+      const response = await fetch('/api/v1/users/login',{
+        method: 'POST',
+        credentials : 'include',
+        headers:{
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify(user)
+      })
+
+      if(response.ok){
+        navigate('/home')
+      }
+      else{
+        setError('Error login')
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Internal Server Error')
+    }
+  }
+
+
+
   return (
     <div className='h-screen w-full main-bg'>
       <header className='
@@ -20,17 +56,61 @@ export const Login = () => {
             <h1 className='text-center text-white text-2xl font-bold mb-4'>Sign Up</h1>
 
             <form className='
-            space-y-4'>
+            space-y-4'
+            onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="email"
-                className='tex-sm font-medium text-gray-300 block'>
-                  Email
-                  <input type="email"
-                  className='w-full px-3 my-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring'
-                  placeholder='example@example.com' />
-                </label>
-              </div>
+              <label htmlFor='username' className='text-sm font-medium text-gray-300 block'>
+                Username
+                <input
+                  type='text'
+                  value={user?.username || ''}
+                  onChange={(e) =>
+                    setUser((prevUser) => ({
+                      ...prevUser!,
+                      username: e.target.value,
+                    }))
+                  }
+                  className='h-14 w-full px-2 my-2 mt-4 border border-gray-700 rounded-md bg-transparent text-white focus:backdrop-blur-sm focus:ring'
+                  placeholder='Username'
+                />
+              </label>
+            </div>
+
+            <div>
+              <label htmlFor='password' className='text-sm font-medium text-gray-300 block'>
+                Password
+                <input
+                  type='password'
+                  value={user?.password || ''}
+                  onChange={(e) =>
+                    setUser((prevUser) => ({
+                      ...prevUser!,
+                      password: e.target.value,
+                    }))
+                  }
+                  className='h-14 w-full px-2 my-2 mt-4 border border-gray-700 rounded-md bg-transparent text-white focus:backdrop-blur-sm focus:ring'
+                  placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;'
+                />
+              </label>
+            </div>
+
+            <button type="submit"
+            className='w-full py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-900'>
+              Sign in</button>
             </form>
+            {error ? 
+            (<div className='text-center text-gray-400'>
+            Invalid username or password. Please try again or{" "} 
+            <Link to={'/registration'} className='text-red-600 hover:underline'>
+            Sign Up
+            </Link>
+            </div>) : 
+            (<div className='text-center text-gray-400'>
+            Dont have an account?{" "} 
+            <Link to={'/registration'} className='text-red-600 hover:underline'>
+            Sign up
+            </Link>
+            </div>)}
           </div>
       </div>
     </div>

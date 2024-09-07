@@ -3,8 +3,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const Registration = () => {
+    const { searchParams } = new URL(document.location);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const emailAddress = searchParams.get("email");
+
   const [user, setUser] = useState<IUser | null>({
-    email: '',
+    email: emailAddress || '',
     username: '',
     password: '',
   });
@@ -114,6 +118,12 @@ export const Registration = () => {
               Sign Up
             </button>
           </form>
+          <div className='text-center text-gray-400'>
+            Already a member?{" "} 
+            <Link to={'/login'} className='text-red-600 hover:underline'>
+            Sign in
+            </Link>
+            </div>
         </div>
       </div>
     </div>
