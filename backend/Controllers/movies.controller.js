@@ -1,3 +1,4 @@
+import { ENV_VARS } from '../config/envVars.js';
 import fetchFromTMDB from '../service/tmd.service.js'
 
 
@@ -54,6 +55,16 @@ export async function getMoviesByCategory(req, res) {
 	const category = req.params.category;
 	try {
 		const data = await fetchFromTMDB(`https://api.themoviedb.org/3/movie/${category}?language=en-US&page=1`);
+		res.status(200).json({ success: true, content: data.results });
+	} catch (error) {
+		res.status(500).json({ success: false, message: "Internal Server Error" });
+	}
+}
+
+export async function getMoviesByGenre(req,res) {
+	const genreID = req.params.genreID;
+	try {
+		const data = await fetchFromTMDB(`https://api.themoviedb.org/3/discover/movie?api_key=${ENV_VARS.TMDB_API_KEY}&with_genres=${genreID}`)
 		res.status(200).json({ success: true, content: data.results });
 	} catch (error) {
 		res.status(500).json({ success: false, message: "Internal Server Error" });
