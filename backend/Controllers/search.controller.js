@@ -91,7 +91,11 @@ export async function searchTv(req, res) {
 
 export async function getSearchHistory(req, res) {
     try {
-        res.status(200).json({ success: true, content: req.user.searchHistory });
+        const user = await userModel.findOne({username: req.user.username})
+        if(user){
+            res.status(200).json({ success: true, content: user.history });
+        }
+        
     } catch (error) {
         res.status(500).json({ success: false, message: "Internal Server Error" });
     }

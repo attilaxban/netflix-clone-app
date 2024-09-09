@@ -7,16 +7,16 @@ export default {
   ],
   theme: {
     extend: {
-      // scrollbar: {
-      //   hide: {
-      //     'scrollbar-width': 'none',
-      //     'scrollbar-color': 'transparent transparent',
-      //     "scrollbar" : 'hide'
-      //   },
-      //   thin: {
-      //     'scrollbar-width': 'thin',
-      //   },
-      // },
+      scrollbar: {
+        hide: {
+          'scrollbar-width': 'none',
+          'scrollbar-color': 'transparent transparent',
+          "scrollbar" : 'hide'
+        },
+        thin: {
+          'scrollbar-width': 'thin',
+        },
+      },
     },
   },
   plugins: [

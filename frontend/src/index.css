@@ -5,3 +5,13 @@
 .main-bg{
   background-image: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0.1)), url("netflix_bg.png");
 }
+
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  
+  scrollbar-width: none; 
+}
