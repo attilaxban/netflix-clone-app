@@ -11,7 +11,7 @@ export const Home = () => {
   const [onTheAirTV, setOnTheAirTV] = useState([]);
   const [topRatedTV, setTopRatedTV] = useState([]);
 
-  const fetchMovies = async (endpoint, setter) => {
+  const getMedia = async (endpoint, setter) => {
     try {
       const response = await fetch(endpoint, {
         method: 'GET',
@@ -32,13 +32,13 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    fetchMovies('/api/v1/movies/popular', setPopularMovies);
-    fetchMovies('/api/v1/movies/upcoming', setUpcomingMovies);
-    fetchMovies('/api/v1/movies/top_rated', setTopRatedMovies);
+    getMedia('/api/v1/movies/popular', setPopularMovies);
+    getMedia('/api/v1/movies/upcoming', setUpcomingMovies);
+    getMedia('/api/v1/movies/top_rated', setTopRatedMovies);
 
-    fetchMovies('/api/v1/tv/popular', setPopularTV);
-    fetchMovies('/api/v1/tv/on_the_air', setOnTheAirTV);
-    fetchMovies('/api/v1/tv/top_rated', setTopRatedTV);
+    getMedia('/api/v1/tv/popular', setPopularTV);
+    getMedia('/api/v1/tv/on_the_air', setOnTheAirTV);
+    getMedia('/api/v1/tv/top_rated', setTopRatedTV);
   }, []);
 
   return (

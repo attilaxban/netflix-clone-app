@@ -135,3 +135,57 @@ export async function deleteUser(req, res) {
     res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+export async function updateHistory(req, res) {
+  try {
+    const user = await userModel.findOne({ username: req.user.username });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const history = user.history || [];
+    const movieTitle = req.body.title;
+
+    if (!history.includes(movieTitle)) {
+      history.push(movieTitle);
+
+      await user.updateOne({ history: history });
+
+      return res.status(200).json({ message: "History updated successfully" });
+    } else {
+      return res.status(200).json({ message: "Movie already in history" });
+    }
+  } catch (error) {
+    console.error("Error updating history:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export async function removeFromHistory(req, res) {
+  try {
+    const user = await userModel.findOne({ username: req.user.username });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const history = user.history || [];
+    const movieTitle = req.body.title;
+
+    if (history.includes(movieTitle)) {
+
+      const updatedHistory = history.filter(item => item !== movieTitle);
+
+      await user.updateOne({ history: updatedHistory });
+
+      return res.status(200).json({ message: "Movie removed from history" });
+    } else {
+      return res.status(404).json({ message: "Movie not found in history" });
+    }
+  } catch (error) {
+    console.error("Error removing from history:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+

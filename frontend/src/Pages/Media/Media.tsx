@@ -7,7 +7,6 @@ export const Media = () => {
   const [trailerKey, setTrailerKey] = useState('');
   const location = useLocation();
   
-  // Dinamikus végpontok beállítása
   const getDetails = async (id, type) => {
     const endpoint = `/api/v1/${type}/${id}/details`;
     try {

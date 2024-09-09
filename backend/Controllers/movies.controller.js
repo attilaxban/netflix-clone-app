@@ -61,6 +61,7 @@ export async function getMoviesByCategory(req, res) {
 	}
 }
 
+<<<<<<< HEAD
 export async function getMoviesByGenre(req,res) {
 	const genreID = req.params.genreID;
 	try {
@@ -68,5 +69,15 @@ export async function getMoviesByGenre(req,res) {
 		res.status(200).json({ success: true, content: data.results });
 	} catch (error) {
 		res.status(500).json({ success: false, message: "Internal Server Error" });
+=======
+export async function getMoviesByGenres(req,res) {
+	const genreID = req.params.genreID;
+	try {
+	  const data = await fetchFromTMDB(`https://api.themoviedb.org/3/discover/movie?api_key=${ENV_VARS.TMDB_API_KEY}&with_genres=${genreID}`);
+	  res.status(200).json({ success: true, content: data.results });
+	} catch (error) {
+	  console.error("Error fetching TV by genre:", error);
+	  res.status(500).json({ success: false, message: "Internal Server Error" });
+>>>>>>> frontend
 	}
 }
