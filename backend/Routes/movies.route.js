@@ -6,7 +6,7 @@ import { verifyToken } from '../config/tokenGenerator.js';
 
 const router = express.Router();
 
-router.get('/trending', verifyToken, getTrendingMovie)
+router.get('/trendings', verifyToken, getTrendingMovie)
 router.get('/:id/trailers', verifyToken, getMovieTrailers)
 router.get('/:id/details', verifyToken, getMovieDetails)
 router.get('/:id/similar', verifyToken, getSimilarMovies)

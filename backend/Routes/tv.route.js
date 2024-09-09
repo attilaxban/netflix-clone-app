@@ -8,6 +8,6 @@ router.get("/trending", verifyToken, getTrendingTv);
 router.get("/:id/trailers", verifyToken, getTvTrailers);
 router.get("/:id/details", verifyToken, getTvDetails);
 router.get("/:id/similar", verifyToken, getSimilarTvs);
-router.get("/category/:category", verifyToken, getTvsByCategory);
+router.get("/:category", verifyToken, getTvsByCategory);
 
 export default router;
