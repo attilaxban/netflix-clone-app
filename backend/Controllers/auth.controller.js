@@ -145,10 +145,11 @@ export async function updateHistory(req, res) {
     }
 
     const history = user.history || [];
-    const movieTitle = req.body.title;
+    const movie = req.body; 
+    const movieExists = history.some(item => item.id === movie.id);
 
-    if (!history.includes(movieTitle)) {
-      history.push(movieTitle);
+    if (!movieExists) {
+      history.push(movie); 
 
       await user.updateOne({ history: history });
 
@@ -169,12 +170,15 @@ export async function removeFromHistory(req, res) {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
     const history = user.history || [];
-    const movieTitle = req.body.title;
+    const movie = req.body; 
 
-    if (history.includes(movieTitle)) {
+    const movieExists = history.some(item => item.id === movie.id);
 
-      const updatedHistory = history.filter(item => item !== movieTitle);
+    if (movieExists) {
+
+      const updatedHistory = history.filter(item => item.id !== movie.id);
 
       await user.updateOne({ history: updatedHistory });
 
@@ -187,5 +191,6 @@ export async function removeFromHistory(req, res) {
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+
 
 

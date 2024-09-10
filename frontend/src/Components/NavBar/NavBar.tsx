@@ -3,14 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { LogOut, Menu, Search, X } from "lucide-react";
 
 const Navbar = ({setter,value,handler}) => {
+
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
-
   const navigate = useNavigate();
+
 
   const handleLogOut = async (e) => {
     e.preventDefault();
@@ -56,7 +56,7 @@ const Navbar = ({setter,value,handler}) => {
             </p>
             <p
               className="hover:underline cursor-pointer"
-              onClick={() => navigate('/media', { state: { type: "movie" } })}
+              onClick={() => navigate('/mylist')}
             >
               My List
             </p>
@@ -82,6 +82,9 @@ const Navbar = ({setter,value,handler}) => {
           <div className="sm:hidden">
             <Menu className="size-6 cursor-pointer" onClick={toggleMobileMenu} />
           </div>
+          <div className='absolute right-3'>
+          <X onClick={() => history.back()} className='text-red-600 hover:cursor-pointer hover:text-gray-400' size={36} strokeWidth={3}/>
+        </div>
         </div>
       </header>
     </div>

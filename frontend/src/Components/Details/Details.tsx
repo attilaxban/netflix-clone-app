@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../NavBar/NavBar';
 import { Minus, Plus, X } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 export const Details = ({ details, trailerKey }) => {
-  const { backdrop_path, title, release_date, vote_average, genres, overview } = details;
+  const { backdrop_path, id, title, release_date, vote_average, genres, overview } = details; // Include the movie ID
   const [added, setAdded] = useState(false);
+  const location = useLocation();
 
+  // Fetch history and check if this movie is in the user's history
   const getHistory = async () => {
     try {
       const response = await fetch('/api/v1/search/history', {
@@ -17,31 +20,29 @@ export const Details = ({ details, trailerKey }) => {
         const data = await response.json();
         console.log(data);
 
-    
-        if (data.content.includes(title)) {
-          setAdded(true); 
-        } else {
-          setAdded(false); 
-        }
+        // Check if the movie exists in the history by comparing movie IDs
+        const movieExists = data.content.some((item) => item.id === id);
+        setAdded(movieExists);
       } else {
         throw new Error("Error finding history");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       console.error("Internal Server Error");
     }
   };
 
   useEffect(() => {
-    if(title){
+    if (id) {
       getHistory(); 
+      console.log(location.state.id);
     }
-    
-  }, [title,getHistory]);
+  }, [id]);
 
+  // Function to add movie to history
+  const updateHistory = async (e) => {
+    e.preventDefault();
+    const movie = { ...details, type: location.state.type }; // Create the full movie object with "type"
 
-  const updateHistory = async (e: { preventDefault: () => void; },title: undefined) => {
-    e.preventDefault()
     try {
       const response = await fetch('/api/v1/users/update/history', {
         method: 'PATCH',
@@ -49,22 +50,24 @@ export const Details = ({ details, trailerKey }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title: title }),
+        body: JSON.stringify(movie), // Send the full movie object
       });
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
-        setAdded(true); 
+        console.log(data.message);
+        setAdded(true);
       }
     } catch (error) {
-      console.error("Error adding movie to history");
+      console.error("Error adding movie to history:", error);
     }
   };
 
- 
-  const removeFromHistory = async (e: { preventDefault: () => void; },title: undefined) => {
-    e.preventDefault()
+  // Function to remove movie from history
+  const removeFromHistory = async (e) => {
+    e.preventDefault();
+    const movie = { ...details, type: location.state.type }; // Full movie object with "type"
+
     try {
       const response = await fetch('/api/v1/users/update/history/delete', {
         method: 'POST',
@@ -72,18 +75,16 @@ export const Details = ({ details, trailerKey }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ title: title }),
+        body: JSON.stringify(movie), // Send the full movie object
       });
 
       if (response.ok) {
         const data = await response.json();
         console.log(data.message);
-        setAdded(false); 
-      } else {
-        throw new Error('Failed to remove movie from history');
+        setAdded(false);
       }
     } catch (error) {
-      console.error('Error removing from history:', error);
+      console.error("Error removing movie from history:", error);
     }
   };
 
@@ -97,10 +98,7 @@ export const Details = ({ details, trailerKey }) => {
       ></div>
 
       <div className="relative z-10">
-        <Navbar />
-        <div className='absolute right-3'>
-        <X onClick={() => history.back()} className='text-red-600 hover:cursor-pointer hover:text-gray-400' size={36} strokeWidth={3}/>
-        </div>
+        <Navbar setter={undefined} value={undefined} handler={undefined} />
         <div className="flex flex-col md:flex-row items-center min-h-screen bg-black bg-opacity-75 p-4 md:p-12 space-y-6 md:space-y-0 md:space-x-12">
          
           <div className="w-full md:w-1/2">
@@ -123,7 +121,6 @@ export const Details = ({ details, trailerKey }) => {
           </div>
 
           <div className="w-full md:w-1/2 text-white space-y-4">
-          
             <h1 className="text-4xl font-bold">{title}</h1>
             <p className="text-sm text-gray-300">{release_date}</p>
             <div className="flex space-x-4">
@@ -131,7 +128,7 @@ export const Details = ({ details, trailerKey }) => {
             </div>
             <div className="flex space-x-2">
               {genres &&
-                genres.map((genre: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
+                genres.map((genre) => (
                   <span
                     key={genre.id}
                     className="bg-red-600 px-3 py-1 rounded-full text-sm"
@@ -147,9 +144,9 @@ export const Details = ({ details, trailerKey }) => {
                 Watch Now 
               </button>
               {added ? (
-                <Minus onClick={(e) => removeFromHistory(e,title)} />
+                <Minus onClick={(e) => removeFromHistory(e)} />
               ) : (
-                <Plus onClick={(e) => updateHistory(e,title)} />
+                <Plus onClick={(e) => updateHistory(e)} />
               )}
             </div>
 

@@ -19,7 +19,7 @@ export const Home = () => {
   const [filtered, setfiltered] = useState([]);
 
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: { target: { value: any; }; }) => {
     const value = e.target.value;
     setSearchTerm(value);
    
@@ -45,7 +45,7 @@ export const Home = () => {
 
   return (
     <div>
-      <Navbar value={searchTerm} setter={setSearchTerm} content={allContent} handler={handleSearch}/>
+      <Navbar value={searchTerm} setter={setSearchTerm} handler={handleSearch}/>
 
       {
         searchTerm.length === 0 ? 

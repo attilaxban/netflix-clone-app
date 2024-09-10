@@ -6,6 +6,7 @@ import Main from "./Pages/Main/Main"
 import { Media } from "./Pages/Media/Media"
 import Movies from "./Pages/Movies/Movies"
 import TV from "./Pages/TV/TV"
+import { MyList } from "./Pages/MyList/MyList"
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
       <Route path='/media' element={<Media />} />
       <Route path='/movies' element={<Movies />}/>
       <Route path='/tv' element={<TV />}/>
+      <Route path='/mylist' element={<MyList />}/>
     </Routes>
   )
 }
