@@ -61,8 +61,7 @@ export const Movies = () => {
           </div> :
           <div className='main-h-screen main-bg'>
             <FilmList title="Searched Content" films={filtered} type={"movies"} />
-          </div>
-      }
+          </div>}
     </div>
 
   );
