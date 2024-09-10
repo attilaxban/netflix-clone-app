@@ -1,4 +1,3 @@
-import { Plus } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -79,8 +78,6 @@ const FilmList = ({ title, films, type }) => {
               <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center p-4 cursor-pointer">
                 <div>
                   <h3 className="text-lg font-bold text-white">{film.title}</h3>
-                  <p className="text-gray-300 text-sm">
-                  </p>
                 </div>
               </div>
             </div>

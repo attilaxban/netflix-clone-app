@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../../Components/NavBar/NavBar';
 import FilmList from '../../Components/List/List';
 import { movieGenres, tvGenres } from '../../genres';
+import { filterContent } from '../../Utility/searchHandler';
+import { getMedia } from '../../Utility/getMedia';
 
 export const TV = () => {
   const [action, setAction] = useState([]);
@@ -13,54 +15,56 @@ export const TV = () => {
   const [scifi, setScifi] = useState([]);
   const [kids, setKids] = useState([]);
 
+  const allContent = [...action,...comedy,...animation,...crime,...family,...drama,...scifi,...kids];
 
-  const fetchMovies = async (endpoint, setter) => {
-    try {
-      const response = await fetch(endpoint, {
-        method: 'GET',
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data)
-        setter(data.content || []);
+  const [searchTerm,setSearchTerm] = useState('')
+  const [filtered, setfiltered] = useState([]);
 
-        
-      } else {
-        console.error('Failed to fetch movies');
-      }
-    } catch (error) {
-      console.error('Error fetching movies:', error);
-    }
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+   
+    const uniqueContent = filterContent(allContent,value);  
+    setfiltered(uniqueContent);
   };
 
-  useEffect(() => {
-    fetchMovies(`/api/v1/tv/genre/${tvGenres.actionAndAdventure}`, setAction);
-    fetchMovies(`/api/v1/tv/genre/${tvGenres.comedy}`, setComedy);
-    fetchMovies(`/api/v1/tv/genre/${tvGenres.animation}`, setanimation);
-    fetchMovies(`/api/v1/tv/genre/${tvGenres.crime}`, setCrime);
-    fetchMovies(`/api/v1/tv/genre/${tvGenres.family}`, setFamily);
-    fetchMovies(`/api/v1/tv/genre/${tvGenres.drama}`, setDrama);
-    fetchMovies(`/api/v1/tv/genre/${tvGenres.scifiFantasy}`, setScifi);
-    fetchMovies(`/api/v1/tv/genre/${tvGenres.kids}`, setKids);
 
+  useEffect(() => {
+    getMedia(`/api/v1/tv/genre/${tvGenres.actionAndAdventure}`, setAction);
+    getMedia(`/api/v1/tv/genre/${tvGenres.comedy}`, setComedy);
+    getMedia(`/api/v1/tv/genre/${tvGenres.animation}`, setanimation);
+    getMedia(`/api/v1/tv/genre/${tvGenres.crime}`, setCrime);
+    getMedia(`/api/v1/tv/genre/${tvGenres.family}`, setFamily);
+    getMedia(`/api/v1/tv/genre/${tvGenres.drama}`, setDrama);
+    getMedia(`/api/v1/tv/genre/${tvGenres.scifiFantasy}`, setScifi);
+    getMedia(`/api/v1/tv/genre/${tvGenres.kids}`, setKids);
+
+    console.log(action);
+    
 
   }, []);
 
   return (
     <div>
-      <Navbar />
+      <Navbar value={searchTerm} setter={setSearchTerm} handler={handleSearch} />
+      {
+        searchTerm.length === 0 ? 
       <div className="min-h-screen main-bg">
-        <FilmList title="Action" films={action} type={'movies'} />
-        <FilmList title="Comedy" films={comedy} type={'movies'} />
-        <FilmList title="Animation" films={animation} type={'movies'} />
-        <FilmList title="Crime" films={crime} type={'movies'} />
-        <FilmList title="Family" films={family} type={'movies'} />
-        <FilmList title="Drama" films={drama} type={'movies'} />
-        <FilmList title="Sci-Fi" films={scifi} type={'movies'} />
-        <FilmList title="Kids" films={kids} type={'movies'} />
+        <FilmList title="Action" films={action} type={'tv'} />
+        <FilmList title="Comedy" films={comedy} type={'tv'} />
+        <FilmList title="Animation" films={animation} type={'tv'} />
+        <FilmList title="Crime" films={crime} type={'tv'} />
+        <FilmList title="Family" films={family} type={'tv'} />
+        <FilmList title="Drama" films={drama} type={'tv'} />
+        <FilmList title="Sci-Fi" films={scifi} type={'tv'} />
+        <FilmList title="Kids" films={kids} type={'tv'} />
       </div>
-    </div>
+      :
+      <div className='main-h-screen main-bg'>
+        <FilmList title="Searched Content" films={filtered} type={"tv"} />
+        </div>}
+
+        </div>
 
   );
 };

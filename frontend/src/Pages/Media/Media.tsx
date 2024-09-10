@@ -39,6 +39,7 @@ export const Media = () => {
       if (response.ok) {
         const data = await response.json();
         setTrailerKey(data.trailers[0]?.key || '');
+        console.log(data.trailers)
       } else {
         throw new Error('Failed to GET trailers');
       }

@@ -1,5 +1,5 @@
 import express from "express";
-import { getSimilarTvs, getTrendingTv, getTvDetails, getTvsByCategory, getTvTrailers, getTvsByGenres} from '../Controllers/tv.controller.js';
+import { getSimilarTvs, getTrendingTv, getTvDetails, getTvsByCategory, getTvTrailers,  getTvByGenre} from '../Controllers/tv.controller.js';
 import { verifyToken } from "../config/tokenGenerator.js";
 
 const router = express.Router();
@@ -9,6 +9,6 @@ router.get("/:id/trailers", verifyToken, getTvTrailers);
 router.get("/:id/details", verifyToken, getTvDetails);
 router.get("/:id/similar", verifyToken, getSimilarTvs);
 router.get("/:category", verifyToken, getTvsByCategory);
-router.get("/genre/:genreID", verifyToken, getTvsByGenres)
+router.get("/genre/:genreID", verifyToken, getTvByGenre)
 
 export default router;

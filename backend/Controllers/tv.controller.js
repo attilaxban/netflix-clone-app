@@ -1,6 +1,6 @@
 import { ENV_VARS } from '../config/envVars.js';
 import fetchFromTMDB from '../service/tmd.service.js'
-import { ENV_VARS } from '../config/envVars.js';
+
 
 
 export async function getTrendingTv(req, res) {

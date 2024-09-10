@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../../Components/NavBar/NavBar';
 import FilmList from '../../Components/List/List';
+import { getMedia } from '../../Utility/getMedia';
+import { filterContent } from '../../Utility/searchHandler';
 
 export const Home = () => {
   const [popularMovies, setPopularMovies] = useState([]);
@@ -11,39 +13,43 @@ export const Home = () => {
   const [onTheAirTV, setOnTheAirTV] = useState([]);
   const [topRatedTV, setTopRatedTV] = useState([]);
 
-  const getMedia = async (endpoint, setter) => {
-    try {
-      const response = await fetch(endpoint, {
-        method: 'GET',
-        credentials: 'include',
-      });
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data)
-        setter(data.content || []);
+  const allContent = [...popularMovies,...upcomingMovies,...topRatedMovies]
 
-        
-      } else {
-        console.error('Failed to fetch movies');
-      }
-    } catch (error) {
-      console.error('Error fetching movies:', error);
-    }
+  const [searchTerm,setSearchTerm] = useState('')
+  const [filtered, setfiltered] = useState([]);
+
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+   
+    const uniqueContent = filterContent(allContent,value);  
+    setfiltered(uniqueContent);
   };
+  
+
+
 
   useEffect(() => {
     getMedia('/api/v1/movies/popular', setPopularMovies);
     getMedia('/api/v1/movies/upcoming', setUpcomingMovies);
-    getMedia('/api/v1/movies/top_rated', setTopRatedMovies);
+    getMedia('/api/v1/movies/top_rated', setTopRatedMovies);  
 
     getMedia('/api/v1/tv/popular', setPopularTV);
     getMedia('/api/v1/tv/on_the_air', setOnTheAirTV);
     getMedia('/api/v1/tv/top_rated', setTopRatedTV);
+
+
   }, []);
+
 
   return (
     <div>
-      <Navbar />
+      <Navbar value={searchTerm} setter={setSearchTerm} content={allContent} handler={handleSearch}/>
+
+      {
+        searchTerm.length === 0 ? 
+      
       <div className="min-h-screen main-bg">
         <FilmList title="Popular movies on Netflix" films={popularMovies} type={'movies'} />
         <FilmList title="Upcoming movies" films={upcomingMovies} type={'movies'} />
@@ -53,6 +59,10 @@ export const Home = () => {
         <FilmList title="On The Air TV's" films={onTheAirTV} type={'tv'} />
         <FilmList title="Top Rated TV's" films={topRatedTV} type={'tv'} />
       </div>
+      :
+      <div className='main-h-screen main-bg'>
+        <FilmList title="Searched Content" films={filtered} type={"movies"} />
+        </div>}
     </div>
 
   );

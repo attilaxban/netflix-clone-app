@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../NavBar/NavBar';
-import { Minus, Plus } from 'lucide-react';
+import { Minus, Plus, X } from 'lucide-react';
 
 export const Details = ({ details, trailerKey }) => {
   const { backdrop_path, title, release_date, vote_average, genres, overview } = details;
@@ -26,17 +26,22 @@ export const Details = ({ details, trailerKey }) => {
       } else {
         throw new Error("Error finding history");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       console.error("Internal Server Error");
     }
   };
 
   useEffect(() => {
-    getHistory(); 
-  }, []);
+    if(title){
+      getHistory(); 
+    }
+    
+  }, [title,getHistory]);
 
 
-  const updateHistory = async (title) => {
+  const updateHistory = async (e: { preventDefault: () => void; },title: undefined) => {
+    e.preventDefault()
     try {
       const response = await fetch('/api/v1/users/update/history', {
         method: 'PATCH',
@@ -58,7 +63,8 @@ export const Details = ({ details, trailerKey }) => {
   };
 
  
-  const removeFromHistory = async (title) => {
+  const removeFromHistory = async (e: { preventDefault: () => void; },title: undefined) => {
+    e.preventDefault()
     try {
       const response = await fetch('/api/v1/users/update/history/delete', {
         method: 'POST',
@@ -81,8 +87,6 @@ export const Details = ({ details, trailerKey }) => {
     }
   };
 
-
-
   return (
     <div className="relative min-h-screen">
       <div
@@ -94,7 +98,11 @@ export const Details = ({ details, trailerKey }) => {
 
       <div className="relative z-10">
         <Navbar />
+        <div className='absolute right-3'>
+        <X onClick={() => history.back()} className='text-red-600 hover:cursor-pointer hover:text-gray-400' size={36} strokeWidth={3}/>
+        </div>
         <div className="flex flex-col md:flex-row items-center min-h-screen bg-black bg-opacity-75 p-4 md:p-12 space-y-6 md:space-y-0 md:space-x-12">
+         
           <div className="w-full md:w-1/2">
             {trailerKey ? (
               <div className="relative w-full">
@@ -115,6 +123,7 @@ export const Details = ({ details, trailerKey }) => {
           </div>
 
           <div className="w-full md:w-1/2 text-white space-y-4">
+          
             <h1 className="text-4xl font-bold">{title}</h1>
             <p className="text-sm text-gray-300">{release_date}</p>
             <div className="flex space-x-4">
@@ -122,7 +131,7 @@ export const Details = ({ details, trailerKey }) => {
             </div>
             <div className="flex space-x-2">
               {genres &&
-                genres.map((genre) => (
+                genres.map((genre: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
                   <span
                     key={genre.id}
                     className="bg-red-600 px-3 py-1 rounded-full text-sm"
@@ -134,13 +143,13 @@ export const Details = ({ details, trailerKey }) => {
             <p className="text-gray-300">{overview}</p>
 
             <div className='flex items-center space-x-5'>
-              <button className="bg-red-600 px-6 py-2 rounded-full text-lg font-semibold hover:bg-red-500 transition duration-200">
+              <button className="bg-red-600 px-6 py-2 rounded-full text-lg font-semibold hover:bg-red-800 transition duration-200">
                 Watch Now 
               </button>
               {added ? (
-                <Minus onClick={() => removeFromHistory(title)} />
+                <Minus onClick={(e) => removeFromHistory(e,title)} />
               ) : (
-                <Plus onClick={() => updateHistory(title)} />
+                <Plus onClick={(e) => updateHistory(e,title)} />
               )}
             </div>
 
