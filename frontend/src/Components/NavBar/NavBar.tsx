@@ -77,7 +77,9 @@ const Navbar = ({setter,value,handler}) => {
             )}
             {isSearchOpen && <X className="size-6 cursor-pointer" onClick={toggleSearch} />}
           </div>
+          <Link to="/profile">
           <img src={"/avatar1.png"} alt="Avatar" className="h-8 rounded cursor-pointer" />
+          </Link>
           <LogOut className="size-6 cursor-pointer" onClick={handleLogOut} />
           <div className="sm:hidden">
             <Menu className="size-6 cursor-pointer" onClick={toggleMobileMenu} />

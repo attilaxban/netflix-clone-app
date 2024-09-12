@@ -16,18 +16,9 @@ const userModel = new Schema({
         required: true,
         unique: true
     },
-    image: {
-        type: String,
-        default: ""
-    },
-    history: {
+    list: {
         type: Array,
         default: []
-    },
-    role: {
-        type: String,
-        enum: ['user', 'admin'],
-        default: 'user'
     }
 })
 

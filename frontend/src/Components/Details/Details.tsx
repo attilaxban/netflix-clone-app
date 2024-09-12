@@ -4,11 +4,10 @@ import { Minus, Plus, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
 export const Details = ({ details, trailerKey }) => {
-  const { backdrop_path, id, title, release_date, vote_average, genres, overview } = details; // Include the movie ID
+  const { backdrop_path, id, title, release_date, vote_average, genres, overview } = details; 
   const [added, setAdded] = useState(false);
   const location = useLocation();
 
-  // Fetch history and check if this movie is in the user's history
   const getHistory = async () => {
     try {
       const response = await fetch('/api/v1/search/history', {
@@ -20,7 +19,7 @@ export const Details = ({ details, trailerKey }) => {
         const data = await response.json();
         console.log(data);
 
-        // Check if the movie exists in the history by comparing movie IDs
+
         const movieExists = data.content.some((item) => item.id === id);
         setAdded(movieExists);
       } else {
@@ -38,19 +37,19 @@ export const Details = ({ details, trailerKey }) => {
     }
   }, [id]);
 
-  // Function to add movie to history
+
   const updateHistory = async (e) => {
     e.preventDefault();
-    const movie = { ...details, type: location.state.type }; // Create the full movie object with "type"
+    const movie = { ...details, type: location.state.type }; 
 
     try {
-      const response = await fetch('/api/v1/users/update/history', {
+      const response = await fetch('/api/v1/users/update/list', {
         method: 'PATCH',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(movie), // Send the full movie object
+        body: JSON.stringify(movie), 
       });
 
       if (response.ok) {
@@ -63,19 +62,19 @@ export const Details = ({ details, trailerKey }) => {
     }
   };
 
-  // Function to remove movie from history
-  const removeFromHistory = async (e) => {
+
+  const removeFromHistory = async (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     e.preventDefault();
-    const movie = { ...details, type: location.state.type }; // Full movie object with "type"
+    const movie = { ...details, type: location.state.type }; 
 
     try {
-      const response = await fetch('/api/v1/users/update/history/delete', {
+      const response = await fetch('/api/v1/users/update/list/delete', {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(movie), // Send the full movie object
+        body: JSON.stringify(movie), 
       });
 
       if (response.ok) {

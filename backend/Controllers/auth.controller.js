@@ -100,7 +100,9 @@ export async function updateUserCredentials(req, res) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    user.password = await bcrypt.hash((req.body.password || user.password), 10)
+    if (req.body.password) {
+      user.password = await bcrypt.hash(req.body.password, 10);
+    }
     user.email = req.body.email || user.email;
 
 
@@ -136,7 +138,7 @@ export async function deleteUser(req, res) {
   }
 }
 
-export async function updateHistory(req, res) {
+export async function updateList(req, res) {
   try {
     const user = await userModel.findOne({ username: req.user.username });
 
@@ -144,14 +146,14 @@ export async function updateHistory(req, res) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const history = user.history || [];
+    const list = user.list || [];
     const movie = req.body; 
-    const movieExists = history.some(item => item.id === movie.id);
+    const movieExists = list.some(item => item.id === movie.id);
 
     if (!movieExists) {
-      history.push(movie); 
+      list.push(movie); 
 
-      await user.updateOne({ history: history });
+      await user.updateOne({ list: list });
 
       return res.status(200).json({ message: "History updated successfully" });
     } else {
@@ -163,7 +165,7 @@ export async function updateHistory(req, res) {
   }
 }
 
-export async function removeFromHistory(req, res) {
+export async function removeFromList(req, res) {
   try {
     const user = await userModel.findOne({ username: req.user.username });
 
@@ -171,23 +173,23 @@ export async function removeFromHistory(req, res) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const history = user.history || [];
+    const list = user.list || [];
     const movie = req.body; 
 
-    const movieExists = history.some(item => item.id === movie.id);
+    const movieExists = list.some(item => item.id === movie.id);
 
     if (movieExists) {
 
-      const updatedHistory = history.filter(item => item.id !== movie.id);
+      const updatedList = list.filter(item => item.id !== movie.id);
 
-      await user.updateOne({ history: updatedHistory });
+      await user.updateOne({ list: updatedList });
 
-      return res.status(200).json({ message: "Movie removed from history" });
+      return res.status(200).json({ message: "Movie removed from list" });
     } else {
-      return res.status(404).json({ message: "Movie not found in history" });
+      return res.status(404).json({ message: "Movie not found in list" });
     }
   } catch (error) {
-    console.error("Error removing from history:", error);
+    console.error("Error removing from list:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }

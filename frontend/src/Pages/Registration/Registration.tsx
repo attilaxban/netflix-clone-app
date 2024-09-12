@@ -54,7 +54,7 @@ export const Registration = () => {
         <div className='w-full max-w-md p-8 space-y-6 bg-black/60 rounded-lg shadow-md'>
           <h1 className='text-center text-white text-2xl font-bold mb-4'>Sign Up</h1>
 
-          <form onSubmit={handleSubmit} className='space-y-4'>
+          <form onSubmit={handleSubmit} className='space-y-4 bg-black/60'>
             <div>
               <label htmlFor='email' className='text-sm font-medium text-gray-300 block'>
                 Email
@@ -67,7 +67,7 @@ export const Registration = () => {
                       email: e.target.value,
                     }))
                   }
-                  className='h-14 w-full px-2 my-2 mt-4 border border-gray-700 rounded-md bg-transparent text-white focus:backdrop-blur-sm focus:ring'
+                  className='bg-black/60 h-14 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent'
                   placeholder='example@example.com'
                 />
               </label>
@@ -85,7 +85,7 @@ export const Registration = () => {
                       username: e.target.value,
                     }))
                   }
-                  className='h-14 w-full px-2 my-2 mt-4 border border-gray-700 rounded-md bg-transparent text-white focus:backdrop-blur-sm focus:ring'
+                  className='bg-black/60 h-14 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent'
                   placeholder='Username'
                 />
               </label>
@@ -103,7 +103,7 @@ export const Registration = () => {
                       password: e.target.value,
                     }))
                   }
-                  className='h-14 w-full px-2 my-2 mt-4 border border-gray-700 rounded-md bg-transparent text-white focus:backdrop-blur-sm focus:ring'
+                  className='bg-black/60 h-14 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent'
                   placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;'
                 />
               </label>

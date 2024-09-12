@@ -89,11 +89,11 @@ export async function searchTv(req, res) {
     }
 }
 
-export async function getSearchHistory(req, res) {
+export async function getList(req, res) {
     try {
         const user = await userModel.findOne({username: req.user.username})
         if(user){
-            res.status(200).json({ success: true, content: user.history });
+            res.status(200).json({ success: true, content: user.list });
         }
         
     } catch (error) {
@@ -101,7 +101,7 @@ export async function getSearchHistory(req, res) {
     }
 }
 
-export async function removeItemFromSearchHistory(req, res) {
+export async function removeItemFromList(req, res) {
     let id = req.params.id
 
     id = parseInt(id);
@@ -109,13 +109,13 @@ export async function removeItemFromSearchHistory(req, res) {
     try {
         await userModel.findByIdAndUpdate(req.user._id, {
             $pull: {
-                searchHistory: { id: id },
+                list: { id: id },
             },
         });
 
-        res.status(200).json({ success: true, message: "Item removed from search history" });
+        res.status(200).json({ success: true, message: "Item removed from list" });
     } catch (error) {
-        console.log("Error in removeItemFromSearchHistory controller: ", error.message);
+        console.log("Error in list controller: ", error.message);
         res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }

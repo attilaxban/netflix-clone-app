@@ -70,7 +70,7 @@ export const Login = () => {
                       username: e.target.value,
                     }))
                   }
-                  className='h-14 w-full px-2 my-2 mt-4 border border-gray-700 rounded-md bg-transparent text-white focus:backdrop-blur-sm focus:ring'
+                  className='bg-black/60 h-14 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent'
                   placeholder='Username'
                 />
               </label>
@@ -88,7 +88,7 @@ export const Login = () => {
                       password: e.target.value,
                     }))
                   }
-                  className='h-14 w-full px-2 my-2 mt-4 border border-gray-700 rounded-md bg-transparent text-white focus:backdrop-blur-sm focus:ring'
+                  className='bg-black/60 h-14 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent'
                   placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;'
                 />
               </label>
