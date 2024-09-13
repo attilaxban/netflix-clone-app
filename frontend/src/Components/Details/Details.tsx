@@ -1,89 +1,131 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from '../NavBar/NavBar';
-import { Minus, Plus, X } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from "react";
+import Navbar from "../NavBar/NavBar";
+import { Minus, Plus, X } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import FilmList from "../List/List";
 
-export const Details = ({ details, trailerKey }) => {
-  const { backdrop_path, id, title, release_date, vote_average, genres, overview } = details; 
+export const Details = ({ details, trailerKey, similar, type }) => {
+  const {
+    backdrop_path,
+    id,
+    title,
+    release_date,
+    vote_average,
+    genres,
+    overview,
+    poster_path,
+  } = details;
   const [added, setAdded] = useState(false);
   const location = useLocation();
 
-  const getHistory = async () => {
+  const getList = async () => {
     try {
-      const response = await fetch('/api/v1/search/history', {
-        method: 'GET',
-        credentials: 'include',
+      const response = await fetch("/api/v1/users/list", {
+        method: "GET",
+        credentials: "include",
       });
 
       if (response.ok) {
+        console.log(
+          `Server responsed with ${response.status} status` +
+            { message: "success" }
+        );
         const data = await response.json();
-        console.log(data);
-
-
-        const movieExists = data.content.some((item) => item.id === id);
+        const movieExists = data.content.some(
+          (item: { id: any }) => item.id === id
+        );
         setAdded(movieExists);
       } else {
-        throw new Error("Error finding history");
+        throw new Error(
+          `Server responsed with ${response.status} status` +
+            { message: response.status }
+        );
       }
     } catch (error) {
-      console.error("Internal Server Error");
+      console.error(error);
+      throw new Error(
+        `Server responsed with 500 status.` +
+          { message: "Internal server error" }
+      );
     }
   };
 
   useEffect(() => {
     if (id) {
-      getHistory(); 
-      console.log(location.state.id);
+      getList();
     }
   }, [id]);
 
-
-  const updateHistory = async (e) => {
+  const updateList = async (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
     e.preventDefault();
-    const movie = { ...details, type: location.state.type }; 
+    const movie = { ...details, type: location.state.type };
 
     try {
-      const response = await fetch('/api/v1/users/update/list', {
-        method: 'PATCH',
-        credentials: 'include',
+      const response = await fetch("/api/v1/users/update/list", {
+        method: "PATCH",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(movie), 
+        body: JSON.stringify(movie),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log(data.message);
+        console.log(
+          `Server responded with ${response.status} status - success`
+        );
         setAdded(true);
+      } else {
+        throw new Error(
+          `Server responded with ${response.status} status - Error: ${response.status}`
+        );
       }
     } catch (error) {
-      console.error("Error adding movie to history:", error);
+      console.error(error);
+      throw new Error(
+        `Server responsed with 500 status.` +
+          { message: "Internal server error" }
+      );
     }
   };
 
-
-  const removeFromHistory = async (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+  const removeFromList = async (
+    e: React.MouseEvent<SVGSVGElement, MouseEvent>
+  ) => {
     e.preventDefault();
-    const movie = { ...details, type: location.state.type }; 
+    const movie = { ...details, type: location.state.type };
 
     try {
-      const response = await fetch('/api/v1/users/update/list/delete', {
-        method: 'POST',
-        credentials: 'include',
+      const response = await fetch("/api/v1/users/delete/list/", {
+        method: "POST",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(movie), 
+        body: JSON.stringify(movie),
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log(data.message);
+        console.log(
+          `Server responsed with ${response.status} status` +
+            { message: "success" }
+        );
         setAdded(false);
+      } else {
+        throw new Error(
+          `Server responsed with ${response.status} status` +
+            { message: response.status }
+        );
       }
     } catch (error) {
-      console.error("Error removing movie from history:", error);
+      console.error(error);
+      throw new Error(
+        `Server responsed with 500 status.` +
+          { message: "Internal server error" }
+      );
     }
   };
 
@@ -96,26 +138,30 @@ export const Details = ({ details, trailerKey }) => {
         }}
       ></div>
 
-      <div className="relative z-10">
+      <div className={`relative z-10 ${trailerKey ? "" : "main-bg"}`}>
         <Navbar setter={undefined} value={undefined} handler={undefined} />
-        <div className="flex flex-col md:flex-row items-center min-h-screen bg-black bg-opacity-75 p-4 md:p-12 space-y-6 md:space-y-0 md:space-x-12">
-         
+        <div className="flex flex-col md:flex-row items-center min-h-screen bg-opacity-75 p-4 md:p-12 space-y-6 md:space-y-0 md:space-x-12">
           <div className="w-full md:w-1/2">
             {trailerKey ? (
               <div className="relative w-full">
-                <div className="relative" style={{ paddingTop: '56.25%' }}>
+                <div className="relative" style={{ paddingTop: "56.25%" }}>
                   <iframe
                     className="absolute top-0 left-0 w-full h-full"
-                    src={`https://www.youtube.com/embed/${trailerKey}`}
+                    src={`https://www.youtube-nocookie.com/embed/${trailerKey}?autoplay=1&mute=1`}
                     title="YouTube trailer"
                     frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer ; autoplay  ; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   ></iframe>
                 </div>
               </div>
             ) : (
-              <p className="text-white text-lg">No trailer found...</p>
+              <p className="text-white text-lg flex items-center justify-end">
+                <img
+                  src={`https://image.tmdb.org/t/p/w300${poster_path}`}
+                  alt=""
+                />
+              </p>
             )}
           </div>
 
@@ -127,29 +173,51 @@ export const Details = ({ details, trailerKey }) => {
             </div>
             <div className="flex space-x-2">
               {genres &&
-                genres.map((genre) => (
-                  <span
-                    key={genre.id}
-                    className="bg-red-600 px-3 py-1 rounded-full text-sm"
-                  >
-                    {genre.name}
-                  </span>
-                ))}
+                genres.map(
+                  (genre: {
+                    id: React.Key | null | undefined;
+                    name:
+                      | string
+                      | number
+                      | boolean
+                      | React.ReactElement<
+                          any,
+                          string | React.JSXElementConstructor<any>
+                        >
+                      | Iterable<React.ReactNode>
+                      | React.ReactPortal
+                      | null
+                      | undefined;
+                  }) => (
+                    <span
+                      key={genre.id}
+                      className="bg-red-600 px-3 py-1 rounded-full text-sm"
+                    >
+                      {genre.name}
+                    </span>
+                  )
+                )}
             </div>
-            <p className="text-gray-300">{overview}</p>
+            <p className="text-inherit">{overview}</p>
 
-            <div className='flex items-center space-x-5'>
+            <div className="flex items-center space-x-5">
               <button className="bg-red-600 px-6 py-2 rounded-full text-lg font-semibold hover:bg-red-800 transition duration-200">
-                Watch Now 
+                Watch Now
               </button>
               {added ? (
-                <Minus onClick={(e) => removeFromHistory(e)} />
+                <Minus onClick={(e) => removeFromList(e)} />
               ) : (
-                <Plus onClick={(e) => updateHistory(e)} />
+                <Plus onClick={(e) => updateList(e)} />
               )}
             </div>
-
           </div>
+        </div>
+        <div>
+          {similar ? (
+            <FilmList title={"You Might Like It"} films={similar} type={type} />
+          ) : (
+            <p></p>
+          )}
         </div>
       </div>
     </div>

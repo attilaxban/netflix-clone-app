@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from '../../Components/NavBar/NavBar';
-import FilmList from '../../Components/List/List';
-import { movieGenres } from '../../genres';
-import { getMedia } from '../../Utility/getMedia';
-import { filterContent } from '../../Utility/searchHandler';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
+import Navbar from "../../Components/NavBar/NavBar";
+import FilmList from "../../Components/List/List";
+import { movieGenres } from "../../genres";
+import { getMedia } from "../../Utility/getMedia";
+import { filterContent } from "../../Utility/searchHandler";
 
 export const Movies = () => {
   const [action, setAction] = useState([]);
@@ -15,20 +16,27 @@ export const Movies = () => {
   const [scifi, setScifi] = useState([]);
   const [fantasy, setFantasy] = useState([]);
 
-  const allContent = [...action, ...comedy, ...horror, ...crime, ...family, ...drama, ...scifi, ...fantasy];
+  const allContent = [
+    ...action,
+    ...comedy,
+    ...horror,
+    ...crime,
+    ...family,
+    ...drama,
+    ...scifi,
+    ...fantasy,
+  ];
 
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filtered, setfiltered] = useState([]);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filtered, setfiltered] = useState<any[]>([]);
 
-
-  const handleSearch = (e) => {
-    const value = e.target.value;
+  const handleSearch = (e: { target: { value: any } }) => {
+    const value: string = e.target.value;
     setSearchTerm(value);
 
     const uniqueContent = filterContent(allContent, value);
     setfiltered(uniqueContent);
   };
-
 
   useEffect(() => {
     getMedia(`/api/v1/movies/genre/${movieGenres.action}`, setAction);
@@ -39,31 +47,34 @@ export const Movies = () => {
     getMedia(`/api/v1/movies/genre/${movieGenres.drama}`, setDrama);
     getMedia(`/api/v1/movies/genre/${movieGenres.scifi}`, setScifi);
     getMedia(`/api/v1/movies/genre/${movieGenres.fantasy}`, setFantasy);
-
-
   }, []);
+
 
   return (
     <div>
-      <Navbar value={searchTerm} setter={setSearchTerm} handler={handleSearch} />
+      <Navbar
+        value={searchTerm}
+        setter={setSearchTerm}
+        handler={handleSearch}
+      />
 
-      {
-        searchTerm.length === 0 ?
-          <div className="min-h-screen main-bg">
-            <FilmList title="Action" films={action} type={'movies'} />
-            <FilmList title="Comedy" films={comedy} type={'movies'} />
-            <FilmList title="Horror" films={horror} type={'movies'} />
-            <FilmList title="Crime" films={crime} type={'movies'} />
-            <FilmList title="Family" films={family} type={'movies'} />
-            <FilmList title="Drama" films={drama} type={'movies'} />
-            <FilmList title="Sci-Fi" films={scifi} type={'movies'} />
-            <FilmList title="Fantasy" films={fantasy} type={'movies'} />
-          </div> :
-          <div className='main-h-screen main-bg'>
-            <FilmList title="Searched Content" films={filtered} type={"movies"} />
-          </div>}
+      {searchTerm.length === 0 ? (
+        <div className="min-h-screen main-bg">
+          <FilmList title="Action" films={action} type={"movies"} />
+          <FilmList title="Comedy" films={comedy} type={"movies"} />
+          <FilmList title="Horror" films={horror} type={"movies"} />
+          <FilmList title="Crime" films={crime} type={"movies"} />
+          <FilmList title="Family" films={family} type={"movies"} />
+          <FilmList title="Drama" films={drama} type={"movies"} />
+          <FilmList title="Sci-Fi" films={scifi} type={"movies"} />
+          <FilmList title="Fantasy" films={fantasy} type={"movies"} />
+        </div>
+      ) : (
+        <div className="main-h-screen main-bg">
+          <FilmList title="Searched Content" films={filtered} type={"movies"} />
+        </div>
+      )}
     </div>
-
   );
 };
 

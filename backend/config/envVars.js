@@ -1,10 +1,10 @@
-import dotenv from 'dotenv'
+import dotenv from "dotenv";
 
 dotenv.config();
 
 export const ENV_VARS = {
-    MONGO_URL: process.env.MONGO_URL,
-    JWT_SECRET: process.env.JWT_SECRET,
-    TMDB_API_KEY: process.env.TMDB_API_KEY,
-    YT_BASE_LINK : process.env.YT_BASE_LINK
-}
+  MONGO_URL: process.env.MONGO_URL,
+  JWT_SECRET: process.env.JWT_SECRET,
+  TMDB_API_KEY: process.env.TMDB_API_KEY,
+  YT_BASE_LINK: process.env.YT_BASE_LINK,
+};

@@ -1,42 +1,46 @@
-import React, { useEffect, useState } from 'react'
-import { History } from "../../Components/History/History"
-
+import React, { useEffect, useState } from "react";
+import { ListElement } from "../../Components/ListElement/ListElement";
 
 export const MyList = () => {
-    const [contents, setContentS] = useState([]);
+  const [contents, setContentS] = useState([]);
 
-    const getHistory = async () => {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        
-        try {
+  const getList = async () => {
+    try {
+      const response = await fetch("/api/v1/users/list", {
+        method: "GET",
+        credentials: "include",
+      });
 
-            const response = await fetch('/api/v1/search/history', {
-                method: 'GET',
-                credentials: 'include'
-            })
+      if (response.ok) {
+        console.log(
+          `Server responsed with ${response.status} status` +
+            { message: "succes" }
+        );
 
-            if (response.ok) {
-                const data = await response.json()
-                setContentS(data.content || []);
-            } else {
-                throw new Error("Error GET history");
-
-            }
-
-        } catch (error) {
-            throw new Error(error);
-
-        }
+        const data = await response.json();
+        setContentS(data.content || []);
+      } else {
+        throw new Error(
+          `Server responsed with ${response.status} status` +
+            { message: response.status }
+        );
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error(
+        `Server responsed with 500 status.` +
+          { message: "Internal server error" }
+      );
     }
+  };
 
-    useEffect(() => {
+  useEffect(() => {
+    getList();
+  }, []);
 
-        getHistory()
-    }, []);
-
-    return (
-        <div>
-            <History content={contents}/>
-        </div>
-      )
-}
+  return (
+    <div>
+      <ListElement content={contents} />
+    </div>
+  );
+};
