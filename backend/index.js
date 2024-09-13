@@ -19,7 +19,7 @@ const corsOption = {
   credentials: true
 }
 
-app.use(cors(corsOptions));
+app.use(cors(corsOption));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -34,6 +34,6 @@ app.get('/api/v1/users/verify-token', verifyToken, (req, res) => {
   res.status(200).json({ success: true });
 });
 
-app.listen(3000, () => {
+app.listen(5000, () => {
   console.log("App is running on http://localhost:5000");
 });
