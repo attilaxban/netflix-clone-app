@@ -37,7 +37,7 @@ export const Home = () => {
 
       if (response.ok) {
         setTrending(data.trailers);
-      }else {
+      } else {
         console.error(`Server responded with ${response.status} status`);
       }
     } catch (error) {
