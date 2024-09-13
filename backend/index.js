@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from 'cors'
 
 import authorizationRoutes from "./Routes/auth.route.js";
 import movieRoutes from "./Routes/movies.route.js";
@@ -10,6 +11,15 @@ import { verifyToken } from "./config/tokenGenerator.js";
 
 const app = express();
 
+app.use(cors());
+
+const corsOption = {
+  origin: 'http://localhost:3000',
+  methods: 'GET,POST,PUT,PATCH,DELETE',
+  credentials: true
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -25,5 +35,5 @@ app.get('/api/v1/users/verify-token', verifyToken, (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("App is running on http://localhost:3000");
+  console.log("App is running on http://localhost:5000");
 });
