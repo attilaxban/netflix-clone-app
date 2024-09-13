@@ -1,0 +1,5 @@
+MONGO_URL=mongodb+srv://<username>:<password>@cluster0.jzux7up.mongodb.net/NetflixClone
+
+JWT_SECRET=<secret>
+
+TMDB_API_KEY=<tmdb-api-key>
