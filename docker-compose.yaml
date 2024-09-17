@@ -1,0 +1,45 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: db
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - '5000:5000'
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - '80:80'
+    depends_on:
+      - backend
+    # volumes:
+    #   - ./frontend/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    #   - ./frontend/dist:/usr/share/nginx/html/
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:
+
+networks:
+  app-network:
+    driver: bridge

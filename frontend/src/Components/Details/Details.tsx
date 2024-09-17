@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Navbar from "../NavBar/NavBar";
-import { Minus, Plus, X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import FilmList from "../List/List";
+import { Minus, Plus } from "lucide-react";
 
-export const Details = ({ details, trailerKey, similar, type }) => {
+export const Details = ({ details, trailerKey, similar, type } : {details : any, trailerKey : string, similar : any, type : string}) => {
   const {
     backdrop_path,
     id,
@@ -139,7 +138,7 @@ export const Details = ({ details, trailerKey, similar, type }) => {
       ></div>
 
       <div className={`relative z-10 ${trailerKey ? "" : "main-bg"}`}>
-        <Navbar setter={undefined} value={undefined} handler={undefined} />
+        <Navbar value={undefined} handler={undefined} />
         <div className="flex flex-col md:flex-row items-center min-h-screen bg-opacity-75 p-4 md:p-12 space-y-6 md:space-y-0 md:space-x-12">
           <div className="w-full md:w-1/2">
             {trailerKey ? (

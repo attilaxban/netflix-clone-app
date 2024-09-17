@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken";
 
+//middleware dir-be logikusabb
+
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
 

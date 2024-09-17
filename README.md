@@ -29,5 +29,16 @@
         npm run dev (for running in dev mode)
 
 
+## RUN THE APPLICATION FROM DOCKER
+
+ 1. docker build -t backend-image .
+ 2. docker run --env-file ./backend/.env -d --name backend  --network mynw -p 5000:5000 backend-image
+
+ 3. docker build -t frontend-image .
+ 4. docker run -d --name frontend  --network mynw -p 80:80 frontend-image
+
+
+
 ## PRE-REQUISITES
+
 

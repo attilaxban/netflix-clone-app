@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .main-bg{
-  background-image: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0.1)), url("netflix_bg.png");
+  background-image: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0.1)), url("../public/netflix_bg.png");
 }
 
 

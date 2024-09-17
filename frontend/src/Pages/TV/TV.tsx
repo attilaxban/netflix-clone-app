@@ -1,5 +1,4 @@
 /* eslint-disable react-refresh/only-export-components */
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import Navbar from "../../Components/NavBar/NavBar";
@@ -55,7 +54,6 @@ export const TV = () => {
     <div className="main-bg min-h-screen">
       <Navbar
         value={searchTerm}
-        setter={setSearchTerm}
         handler={handleSearch}
       />
       {searchTerm.length === 0 ? (

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../Components/NavBar/NavBar";
 import FilmList from "../../Components/List/List";
 import { movieGenres } from "../../genres";
@@ -54,7 +54,6 @@ export const Movies = () => {
     <div>
       <Navbar
         value={searchTerm}
-        setter={setSearchTerm}
         handler={handleSearch}
       />
 
