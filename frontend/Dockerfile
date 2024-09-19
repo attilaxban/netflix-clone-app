@@ -1,4 +1,4 @@
-FROM node:latest AS build
+FROM node:22-alpine3.18 AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -6,7 +6,7 @@ COPY . .
 RUN npm run build
 
 
-FROM nginx:latest AS prod
+FROM nginx:1.27.1-alpine3.20-perl
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
