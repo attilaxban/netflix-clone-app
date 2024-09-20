@@ -38,6 +38,25 @@
  4. docker run -d --name frontend  --network mynw -p 80:80 frontend-image
 
 
+## START JENKINS SERVER (Dockerfile in the root directory)
+**WARNING!**
+This solution is unsafe for production use, as it relies on running as root and sharing the docker.sock. Only for educational purposes.
+## Requirements
+- Docker
+## How to use
+Build the image:
+
+```sh
+docker build -t custom-jenkins .
+```
+Run the image:
+
+```sh
+docker run -p 8080:8080 \
+  -v jenkins_home:/var/jenkins_home \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  custom-jenkins
+```
 
 ## PRE-REQUISITES
 

@@ -14,9 +14,11 @@ spec:
       labels:
         app: frontend
     spec:
+      imagePullSecrets:
+        - name: aws-secret
       containers:
         - name: frontend
-          image: attilaxban/frontend-image:latest
+          image: 891377360878.dkr.ecr.ca-central-1.amazonaws.com/mernflix/frontend:latest
           resources:
             requests:
               cpu: 250m
@@ -27,7 +29,6 @@ spec:
           ports:
             - containerPort: 80
 ---
-# https://kubernetes.io/docs/concepts/services-networking/service/
 apiVersion: v1
 kind: Service
 metadata:

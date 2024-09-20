@@ -14,9 +14,11 @@ spec:
       labels:
         app: backend
     spec:
+      imagePullSecrets:
+        - name: aws-secret
       containers:
         - name: backend
-          image: attilaxban/backend-image:latest
+          image: 891377360878.dkr.ecr.ca-central-1.amazonaws.com/mernflix/backend
           resources:
             requests:
               cpu: 250m
