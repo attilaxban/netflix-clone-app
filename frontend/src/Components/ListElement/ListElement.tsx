@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   JSXElementConstructor,
   Key,
@@ -11,7 +10,7 @@ import { filterContent } from "../../Utility/searchHandler";
 import Navbar from "../NavBar/NavBar";
 import { useNavigate } from "react-router-dom";
 
-export const ListElement = ({ content }) => {
+export const ListElement = ({ content } : {content : any}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filtered, setfiltered] = useState<any[]>([]);
 
@@ -33,7 +32,6 @@ export const ListElement = ({ content }) => {
     <div>
       <Navbar
         value={searchTerm}
-        setter={setSearchTerm}
         handler={handleSearch}
       />
       {searchTerm.length === 0 ? (
@@ -61,7 +59,7 @@ export const ListElement = ({ content }) => {
                   >
                     <img
                       src={`https://image.tmdb.org/t/p/w300${x.poster_path}`}
-                      alt={x.title}
+                      alt={`${x.title}`}
                       className="movie-image block object-cover rounded-lg w-auto h-auto"
                     />
                     <div className="movie-overlay absolute inset-0 bg-black bg-opacity-70 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">

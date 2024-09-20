@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LogOut, Menu, Search, X } from "lucide-react";
 
-const Navbar = ({ setter, value, handler }) => {
+const Navbar = ({ value, handler } : {value : any, handler: any}) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);

@@ -88,7 +88,6 @@ export const Home = () => {
     <div className="main-bg min-h-screen">
       <Navbar
         value={searchTerm}
-        setter={setSearchTerm}
         handler={handleSearch}
       />
 

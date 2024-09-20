@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const FilmList = ({ title, films, type }) => {
+const FilmList = ({ title, films, type } : {title : string, films : any, type: string}) => {
   const scrollRef = useRef<any>(null);
   const navigate = useNavigate();
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -84,11 +84,11 @@ const FilmList = ({ title, films, type }) => {
               <div
                 key={film.id}
                 className="relative flex-shrink-0 w-40 bg-gray-800 rounded-lg transform transition-transform duration-300 hover:scale-110"
-                onClick={() => handleClick(film.id, film)}
+                onClick={() => handleClick(film.id)}
               >
                 <img
                   src={`https://image.tmdb.org/t/p/w500${film.poster_path}`}
-                  alt={film.title}
+                  alt={`${film.title}`}
                   className="w-full h-auto rounded-lg"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center p-4 cursor-pointer">

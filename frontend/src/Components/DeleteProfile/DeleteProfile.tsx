@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-export const DeleteProfile = ({ setDeleting }) => {
+export const DeleteProfile = ({ setDeleting } : {setDeleting : any}) => {
   const [email, setEmail] = useState<string>("");
   const [confirm, setConfirm] = useState<boolean>(false);
   const navigate = useNavigate();

@@ -68,7 +68,7 @@ export async function getSimilarMovies(req, res) {
 	  res.status(500).json({ success: false, message: "Internal Server Error" });
 	}
   }
-
+//prefix env var-nak
 export async function getMoviesByCategory(req, res) {
   const category = req.params.category;
   try {
