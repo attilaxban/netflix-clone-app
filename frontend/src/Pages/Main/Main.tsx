@@ -45,7 +45,7 @@ const Main = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <button className="bg-red-600 text-xl lg:text-2xl px-2 lg:px-6 py-1 md:py-2 rounded flex justify-center items-center hover:bg-red-800">
-            Get Started
+            Getting Started
             <ChevronRight className="size-8 md:size-10" />
           </button>
         </form>
