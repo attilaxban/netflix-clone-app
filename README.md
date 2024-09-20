@@ -61,3 +61,4 @@ docker run -p 8080:8080 \
 ## PRE-REQUISITES
 
 
+test
