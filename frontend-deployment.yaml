@@ -19,6 +19,7 @@ spec:
       containers:
         - name: frontend
           image: 891377360878.dkr.ecr.ca-central-1.amazonaws.com/mernflix/frontend:latest
+          imagePullPolicy: Always
           resources:
             requests:
               cpu: 250m
