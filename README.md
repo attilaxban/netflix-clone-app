@@ -37,6 +37,13 @@
  3. docker build -t frontend-image .
  4. docker run -d --name frontend  --network mynw -p 80:80 frontend-image
 
+ ## OR USE DOCKER-COMPOSE:
+    
+    1.  Paste this line into the nginx.conf : proxy_pass http://backend:5000;
+    2.  docker build -t backend .
+    3.  docker build -t frontend .
+    4.  docker compose up
+
 
 ## START JENKINS SERVER (Dockerfile in the root directory)
 **WARNING!**
@@ -57,8 +64,18 @@ docker run -p 8080:8080 \
   -v /var/run/docker.sock:/var/run/docker.sock \
   custom-jenkins
 ```
+## AUTOMATION
+
+    1.  Install the necessary plugins :
+        - Docker pipeline
+        - Amazon ECR
+    2.  Create a 'Pipeline Project'
+    3.  Enable GitHub hook trigger for GITScm polling
+    4.  Copy the Jenkinsfile into the script.
+
 
 ## PRE-REQUISITES
 
-
-test
+    1.  Docker
+    2.  AWS
+    3.  
