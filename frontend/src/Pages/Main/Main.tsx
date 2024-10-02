@@ -5,7 +5,6 @@ import { ChevronRight } from "lucide-react";
 const Main = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
-  alert('Welcome!')
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     navigate("/registration?email=" + email);
