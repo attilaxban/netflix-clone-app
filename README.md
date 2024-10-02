@@ -1,4 +1,4 @@
-**!!!This project is only for educational purposes!!!**
+**This project is only for educational purposes**
 
 ## MERNFLIX (NETFLIX CLONE)
 
