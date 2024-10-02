@@ -14,6 +14,7 @@ spec:
       labels:
         app: frontend
     spec:
+      restartPolicy: Always
       imagePullSecrets:
         - name: aws-secret
       containers:
