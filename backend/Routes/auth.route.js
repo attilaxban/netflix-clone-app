@@ -9,7 +9,7 @@ import {
   updateList,
   removeFromList,
 } from "../Controllers/auth.controller.js";
-import { verifyToken } from "../config/tokenGenerator.js";
+import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 

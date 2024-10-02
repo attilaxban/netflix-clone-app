@@ -21,7 +21,6 @@ const Navbar = ({ value, handler } : {value : any, handler: any}) => {
         console.log(
           `Server responsed with ${response.status}` + { message: "success" }
         );
-        navigate("/login");
       } else {
         throw new Error(
           `Server responsed with ${response.status} status` +

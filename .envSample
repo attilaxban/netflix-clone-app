@@ -1,4 +1,4 @@
-MONGO_URL=mongodb+srv://<username>:<password>@cluster0.jzux7up.mongodb.net/NetflixClone
+MONGO_URL=mongodb+srv://<guest-user>:<guest-password>@cluster0.jzux7up.mongodb.net/NetflixClone
 
 JWT_SECRET=<secret>
 

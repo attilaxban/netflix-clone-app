@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { Details } from "../../Components/Details/Details";
 
 export const Media = () => {
@@ -7,6 +7,8 @@ export const Media = () => {
   const [trailerKey, setTrailerKey] = useState("");
   const [similarContent, setsimilarContent] = useState();
   const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const getDetails = async (id: string, type: string) => {
     const endpoint = `/api/v1/${type}/${id}/details`;
@@ -17,25 +19,14 @@ export const Media = () => {
       });
 
       if (response.ok) {
-        console.log(
-          `Server responsed with ${response.status} status` +
-            { message: "success" }
-        );
-
         const data = await response.json();
         setDetails(data.content);
       } else {
-        throw new Error(
-          `Server responsed with ${response.status} status` +
-            { message: response.status }
-        );
+        throw new Error(`Server responsed with ${response.status} status`);
       }
     } catch (error) {
       console.error(error);
-      throw new Error(
-        `Server responsed with 500 status.` +
-          { message: "Internal server error" }
-      );
+      throw new Error(`Server responsed with 500 status.`);
     }
   };
 
@@ -48,24 +39,14 @@ export const Media = () => {
       });
 
       if (response.ok) {
-        console.log(
-          `Server responsed with ${response.status} status` +
-            { message: "success" }
-        );
         const data = await response.json();
         setTrailerKey(data.trailers[0]?.key || "");
       } else {
-        throw new Error(
-          `Server responsed with ${response.status} status` +
-            { message: response.status }
-        );
+        throw new Error(`Server responsed with ${response.status} status`);
       }
     } catch (error) {
       console.error(error);
-      throw new Error(
-        `Server responsed with 500 status.` +
-          { message: "Internal server error" }
-      );
+      throw new Error(`Server responsed with 500 status.`);
     }
   };
 
@@ -78,38 +59,30 @@ export const Media = () => {
       });
 
       if (response.ok) {
-        console.log(
-          `Server responsed with ${response.status} status` +
-            { message: "success" }
-        );
-
         const data = await response.json();
         setsimilarContent(data.similars);
       } else {
-        throw new Error(
-          `Server responsed with ${response.status} status` +
-            { message: response.status }
-        );
+        throw new Error(`Server responsed with ${response.status} status`);
       }
     } catch (error) {
       console.error(error);
-      throw new Error(
-        `Server responsed with 500 status.` +
-          { message: "Internal server error" }
-      );
+      throw new Error(`Server responsed with 500 status.`);
     }
   };
 
   useEffect(() => {
-    const id = location.state.id;
-    const type = location.state.type;
+    const id = location.state?.id || searchParams.get("id"); 
+    const type = location.state?.type || searchParams.get("type");
 
-    if (id && type) {
-      getDetails(id, type);
-      getTrailer(id, type);
-      getSimilars(id, type);
+    if (!id || !type) {
+      navigate("/home");
+      return;
     }
-  }, []);
+
+    getDetails(id, type);
+    getTrailer(id, type);
+    getSimilars(id, type);
+  }, [location, navigate, searchParams]);
 
   return (
     <div>
@@ -117,7 +90,7 @@ export const Media = () => {
         details={details}
         trailerKey={trailerKey}
         similar={similarContent}
-        type={location.state.type}
+        type={location.state?.type || searchParams.get("type")}
       />
     </div>
   );

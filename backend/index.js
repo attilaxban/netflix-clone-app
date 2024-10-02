@@ -7,7 +7,7 @@ import cors from 'cors'
 import authorizationRoutes from "./Routes/auth.route.js";
 import movieRoutes from "./Routes/movies.route.js";
 import tvRoutes from "./Routes/tv.route.js";
-import { verifyToken } from "./config/tokenGenerator.js";
+import { verifyToken } from "./middleware/verifyToken.js";
 
 const app = express();
 
