@@ -1,2 +1,2 @@
-aws-secret.yaml
-backend-secret-yaml
+'./backend-secret.yaml'
+'./aws-secret.yaml'
